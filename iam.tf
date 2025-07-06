@@ -35,7 +35,6 @@ resource "aws_iam_policy" "db_access_policy" {
 }
 
 resource "aws_ssoadmin_permission_set" "db_access_permission_set" {
-  provider         = aws.sa-east-1
   name             = "db_access_permission_set"
   description      = "Permission set for RDS DB access via IAM"
   instance_arn     = data.aws_ssoadmin_instances.sso.arns[0]
@@ -46,7 +45,6 @@ resource "aws_ssoadmin_permission_set" "db_access_permission_set" {
 }
 
 resource "aws_ssoadmin_customer_managed_policy_attachment" "db_access_policy_attachment" {
-  provider           = aws.sa-east-1
   instance_arn       = aws_ssoadmin_permission_set.db_access_permission_set.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.db_access_permission_set.arn
   customer_managed_policy_reference {
@@ -56,7 +54,6 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "db_access_policy_att
 }
 
 resource "aws_ssoadmin_account_assignment" "assign_admins" {
-  provider           = aws.sa-east-1
   instance_arn       = tolist(data.aws_ssoadmin_instances.sso.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.db_access_permission_set.arn
 
